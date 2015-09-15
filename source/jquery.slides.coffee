@@ -32,6 +32,8 @@
     height: 528
       # Set the default height of the slideshow.
     start: 1
+      # [boolean] Set response (if false -> height=constant)
+    response: true
       # Set the first slide in the slideshow.
     navigation:
       # Next and previous button settings.
@@ -300,7 +302,11 @@
 
     # Get the new width and height
     width = $element.width()
-    height = (@options.height / @options.width) * width
+
+    if @options.response
+      height = (@options.height / @options.width) * width
+    else
+      height = @options.height
 
     # Store new width and height
     @options.width = width
@@ -516,7 +522,7 @@
         # Stop/pause slideshow on mouse enter
         slidesContainer.bind "mouseenter", =>
           clearTimeout @data.restartDelay
-					$.data this, "restartDelay", null
+          $.data this, "restartDelay", null
           @stop()
 
         # Play slideshow on mouse leave
